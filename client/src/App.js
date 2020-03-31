@@ -19,37 +19,26 @@ const styles = theme => ({
   table: {
     minWidth : 1080 //1080 픽셀 이상 출력, 화면이 크기가 줄어들었을 때도 전체 1080의 테이블 크기가 생성되므로 가로 스크롤바가 생성된다.
   }
-})
-
-const customers = [
-{
-  'id' : 1,
-  'image' : 'http://placeimg.com/64/64/1',
-  'name' : '홍길동',
-  'birthday' : '930828',
-  'gender' : '여자',
-  'job' : '요리사'
-},
-{
-  'id' : 2,
-  'image' : 'http://placeimg.com/64/64/2',
-  'name' : '최성현',
-  'birthday' : '930928',
-  'gender' : '남자',
-  'job' : '대학생'
-},
-{
-  'id' : 3,
-  'image' : 'http://placeimg.com/64/64/3',
-  'name' : '나동빈',
-  'birthday' : '931028',
-  'gender' : '남자',
-  'job' : '프로그래머'
-}
-]
+});
 
 function App() {
 
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+  
   const { classes } = this.props;
   return (
     <Paper className = {classes.root}>
@@ -65,7 +54,8 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {customers.map(c => { return ( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}/> ) })}    
+          {this.state.customers ? this.state.customers.map(c => { return ( <Customer key={c.id} id={c.id} image={c.image} name={c.name} birthday={c.birthday} gender={c.gender} job={c.job}/> ) 
+          }) : ""}    
         </TableBody>
       </Table>
     </Paper>
