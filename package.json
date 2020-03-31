@@ -11,7 +11,6 @@
         "express": "^4.16.4"
     },
     "devDependencies": {
-        "concurrently": "^4.0.1",
-        "typescript": "^3.8.3"
+        "concurrently": "^4.0.1"
     }
 }
